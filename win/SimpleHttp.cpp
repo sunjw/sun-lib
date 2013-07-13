@@ -22,15 +22,15 @@ void SimpleHttp::Init(unsigned long lTimeout)
 	m_lTimeout = lTimeout;
 	curl_slist_free_all(m_headerList);
 	m_pCurl = curl_easy_init();
-	if(m_pCurl) 
+	if(m_pCurl)
 	{
 		curl_easy_setopt(m_pCurl, CURLOPT_COOKIEFILE, ""); /* just to start the cookie engine */
 		curl_easy_setopt(m_pCurl, CURLOPT_FOLLOWLOCATION, 1); // 跟踪入 loaction
 		curl_easy_setopt(m_pCurl, CURLOPT_TIMEOUT, lTimeout); // 设置超时
-		//m_headerList = curl_slist_append(m_headerList, "Accept-charset: GB2312,utf-8;q=0.7,*;q=0.7"); 
+		//m_headerList = curl_slist_append(m_headerList, "Accept-charset: GB2312,utf-8;q=0.7,*;q=0.7");
 		//curl_easy_setopt(m_pCurl, CURLOPT_HTTPHEADER, m_headerList); // 设置 Accept-charset
-
-		curl_easy_setopt(m_pCu/Users/sunjw/coding/sun-lib/win/SimpleHttp.hrl, CURLOPT_WRITEFUNCTION, &SimpleHttp::ProcessData);
+        
+		curl_easy_setopt(m_pCurl, CURLOPT_WRITEFUNCTION, &SimpleHttp::ProcessData);
 		curl_easy_setopt(m_pCurl, CURLOPT_WRITEDATA, (void*)&m_strBuffer); // 传入指针
 	}
 }
@@ -60,13 +60,10 @@ size_t SimpleHttp::ProcessData(void* ptr, size_t size, size_t nmemb, void* userd
 		// 应该是 char
 		char* pchar = (char*)ptr;
 		str.append(pchar, pchar + nmemb);
-
-		if(m_bUtf8)
-			pstrContent->append(asciiconv(str)); // convert utf8 string to ascii(native) code string
-		else
-			pstrContent->append(str);
+        
+        pstrContent->append(str);
 	}
-
+    
 	return size * nmemb;
 }
 
@@ -74,9 +71,9 @@ std::string SimpleHttp::MapToString(MapStrStr* pMapData)
 {
 	if(!pMapData)
 		return std::string("");
-
+    
 	std::string strRet("");
-
+    
 	MapStrStr::iterator itr = pMapData->begin();
 	while(itr != pMapData->end())
 	{
@@ -89,14 +86,14 @@ std::string SimpleHttp::MapToString(MapStrStr* pMapData)
 			strRet.append("&");
 		}
 	}
-
+    
 	return strRet;
 }
 
 int SimpleHttp::DoHttp(std::string& strUrl, MapStrStr* pMapData, std::string& strRet, bool bUtf8)
 {
 	std::string strPost;
-
+    
 	SimpleHttp::m_bUtf8 = bUtf8;
 	if(pMapData)
 	{
@@ -113,23 +110,26 @@ int SimpleHttp::DoHttp(std::string& strUrl, MapStrStr* pMapData, std::string& st
 		curl_easy_setopt(m_pCurl, CURLOPT_POSTFIELDSIZE, 0);
 		curl_easy_setopt(m_pCurl, CURLOPT_HTTPGET, 1);
 	}
-
+    
 	int retCode = SendRequest(strUrl);
-	strRet = m_strBuffer;
+    if(m_bUtf8)
+        strRet = asciiconv(m_strBuffer); // convert utf8 string to ascii(native) code string
+    else
+        strRet = m_strBuffer;
 	return retCode;
 }
 
-int SimpleHttp::DoPostFile(std::string& strUrl, 
-		MapStrStr* pMapData, 
-		std::string& strFileMapKey, 
-		std::string& strRet,
-		bool bUtf8)
+int SimpleHttp::DoPostFile(std::string& strUrl,
+                           MapStrStr* pMapData,
+                           std::string& strFileMapKey,
+                           std::string& strRet,
+                           bool bUtf8)
 {
 	if(!pMapData || pMapData->find(strFileMapKey) == pMapData->end())
 	{
 		return -1;
 	}
-
+    
 	SimpleHttp::m_bUtf8 = bUtf8;
 	// 准备 POST 数据
 	struct curl_httppost* pPostBegin = NULL;
@@ -143,31 +143,31 @@ int SimpleHttp::DoPostFile(std::string& strUrl,
 		{
 			// 是文件
 			curl_formadd(&pPostBegin, &pPostEnd,
-				CURLFORM_COPYNAME, strKey.c_str(),
-				CURLFORM_FILE, (*pMapData)[strKey].c_str(),
-				CURLFORM_END);
+                         CURLFORM_COPYNAME, strKey.c_str(),
+                         CURLFORM_FILE, (*pMapData)[strKey].c_str(),
+                         CURLFORM_END);
 		}
 		else
 		{
 			// 普通 Post
 			std::string strValue = itr->second;
 			strValue = urlencode(strValue);
-
+            
 			curl_formadd(&pPostBegin, &pPostEnd,
-				CURLFORM_COPYNAME, strKey.c_str(),
-				CURLFORM_COPYCONTENTS, strValue.c_str(),
-				CURLFORM_END);
+                         CURLFORM_COPYNAME, strKey.c_str(),
+                         CURLFORM_COPYCONTENTS, strValue.c_str(),
+                         CURLFORM_END);
 		}
-
+        
 		++itr;
 		if(itr == pMapData->end())
 			break;
 	}
-
+    
 	curl_easy_setopt(m_pCurl, CURLOPT_HTTPPOST, pPostBegin);
-
+    
 	int retCode = SendRequest(strUrl);
-
+    
 	curl_formfree(pPostBegin);
 	strRet = m_strBuffer;
 	return retCode;
