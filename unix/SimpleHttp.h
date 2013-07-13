@@ -17,10 +17,10 @@ class SimpleHttp
 {
 public:
 	typedef std::map<std::string, std::string> MapStrStr;
-    
+
 	SimpleHttp(unsigned long lTimeout = 5);
 	~SimpleHttp();
-    
+
 	/**
      * 执行 HTTP GET 通信
      * strUrl: string, 要访问的地址
@@ -29,7 +29,7 @@ public:
 	 */
 	inline int DoGet(std::string& strUrl, std::string& strRet, bool bUtf8 = true)
     { return DoHttp(strUrl, NULL, strRet, bUtf8); }
-    
+
     /**
      * 执行 HTTP POST 通信
      * strUrl: string, 要访问的地址
@@ -48,18 +48,18 @@ public:
 	 * bUtf8: bool, 访问的是不是 uft8 编码的
      * return: Response 字符串
 	 */
-	int DoPostFile(std::string& strUrl,
-                   MapStrStr* pMapData,
-                   std::string& strFileMapKey,
-                   std::string& strRet,
-                   bool bUtf8 = true);
-    
+	int DoPostFile(std::string& strUrl, 
+		MapStrStr* pMapData, 
+		std::string& strFileMapKey, 
+		std::string& strRet,
+		bool bUtf8 = true);
+
 	void Reset();
-    
+
 protected:
 	void Init(unsigned long lTimeout);
 	void Clear();
-    
+
 	static size_t ProcessData(void* ptr, size_t size, size_t nmemb, void* userdata);
 	/**
      * 将 MapStrStr 类型的参数转换成字符串
@@ -76,7 +76,7 @@ protected:
 	int DoHttp(std::string& strUrl, MapStrStr* pMapData, std::string& strRet, bool bUtf8);
 	
 	int SendRequest(std::string& strUrl);
-    
+
 	CURL* m_pCurl;
 	curl_slist* m_headerList;
 	std::string m_strBuffer;
