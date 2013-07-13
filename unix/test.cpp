@@ -16,16 +16,16 @@ int main()
 {
 	SimpleHttp http;
 
-	string strUrl("http://www.baidu.com");
+	string strUrl("http://www.google.com/?oe=gbk");
 	string strRet;
 	http.DoGet(strUrl, strRet, false);
+	//cout << strRet << endl;
+
+	strRet = utf8conv(strRet);
 	cout << strRet << endl;
 
-	strRet = strutf8tougbk(strRet);
-	cout << strRet << endl;
-
-	strRet = strgbktoutf8(strRet);
-	cout << strRet << endl;
-
+	strRet = asciiconv(strRet);
+	//cout << strRet << endl;
+    
 	return 0;
 }

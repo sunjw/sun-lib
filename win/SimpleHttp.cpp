@@ -30,7 +30,7 @@ void SimpleHttp::Init(unsigned long lTimeout)
 		//m_headerList = curl_slist_append(m_headerList, "Accept-charset: GB2312,utf-8;q=0.7,*;q=0.7"); 
 		//curl_easy_setopt(m_pCurl, CURLOPT_HTTPHEADER, m_headerList); // 设置 Accept-charset
 
-		curl_easy_setopt(m_pCurl, CURLOPT_WRITEFUNCTION, &SimpleHttp::ProcessData);
+		curl_easy_setopt(m_pCu/Users/sunjw/coding/sun-lib/win/SimpleHttp.hrl, CURLOPT_WRITEFUNCTION, &SimpleHttp::ProcessData);
 		curl_easy_setopt(m_pCurl, CURLOPT_WRITEDATA, (void*)&m_strBuffer); // 传入指针
 	}
 }
