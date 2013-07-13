@@ -23,6 +23,13 @@ namespace sunjwbase
 	typedef std::string tstring;
 #endif
     
+#if defined (WIN32)
+	typedef __int64 INT64;
+#endif
+#if defined (__APPLE__) || defined (UNIX)
+    typedef long long INT64;
+#endif
+
 	// converting part
 	/*
 	 * 将 ascii 编码的 wstring 转换为 utf8 编码的 string
@@ -153,7 +160,7 @@ namespace sunjwbase
     
 	// case insensitive search
 	template<typename T>
-	std::string::size_type strfind_ci(const T& str, const T& substr, const std::locale& loc = std::locale())
+	INT64 strfind_ci(const T& str, const T& substr, const std::locale& loc = std::locale())
 	{
 		typename T::const_iterator it = std::search(str.begin(), str.end(),
                                            substr.begin(), substr.end(),
