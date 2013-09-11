@@ -148,15 +148,15 @@ namespace sunjwbase
 	template<typename charT>
 	struct strequal_ci
 	{
-		strequal_ci( const std::locale& loc ):loc_(loc)
+		strequal_ci( const std::locale& loc ):m_loc(loc)
 		{}
         
 		bool operator()(charT ch1, charT ch2)
 		{
-			return std::toupper(ch1, loc_) == std::toupper(ch2, loc_);
+			return std::toupper(ch1, m_loc) == std::toupper(ch2, m_loc);
 		}
 	private:
-		const std::locale& loc_;
+		const std::locale& m_loc;
 	};
     
 	// case insensitive search
