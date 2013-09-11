@@ -17,7 +17,7 @@
 namespace sunjwbase
 {
 	// define the tstring only for WIN32 platform
-#if defined(_WIN32) && (defined(UNICODE) || defined(_UNICODE))
+#if defined(WIN32) && (defined(UNICODE) || defined(_UNICODE))
 #define _UNICODE_HELPER // use _UNICODE_HELPER internally
 	typedef std::wstring tstring;
 #else
