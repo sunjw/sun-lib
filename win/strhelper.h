@@ -178,6 +178,10 @@ namespace sunjwbase
     // format append for std::string
     std::string strappendformat(std::string& str, const char *format, ...);
 
+	// start with & end with
+	bool str_startwith(const std::string& str, const std::string& target);
+	bool str_endwith(const std::string& str, const std::string& target);
+
 }
 
 

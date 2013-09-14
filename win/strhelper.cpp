@@ -312,3 +312,37 @@ std::string sunjwbase::strappendformat(std::string& str, const char *format, ...
     
     return str;
 }
+
+bool sunjwbase::str_startwith(const std::string& str, const std::string& target)
+{
+	if(str.length() < target.length())
+		return false;
+
+	// Length is enough, let's check content.
+	size_t i = 0;
+	for(; i < target.length(); ++i)
+	{
+		if(str[i] != target[i])
+			return false;
+	}
+
+	return (i == target.length());
+}
+
+bool sunjwbase::str_endwith(const std::string& str, const std::string& target)
+{
+	if(str.length() < target.length())
+		return false;
+
+	// Length is enough, let's check content.
+	size_t str_len = str.length();
+	size_t target_len = target.length();
+	size_t i = 0;
+	for(; i < target.length(); ++i)
+	{
+		if(str[str_len - target_len + i] != target[i])
+			return false;
+	}
+
+	return (i == target.length());
+}
