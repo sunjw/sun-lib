@@ -1,7 +1,7 @@
 /*
  * strhelper header file
  * Author: Sun Junwen
- * Version: 1.3
+ * Version: 2.0
  * Provides converting from tstring, string and wstring to each other
  * And provides string's utf8 converting.
  * Provides triming function to string and wstring.
@@ -174,8 +174,10 @@ namespace sunjwbase
     
     // itostr
     std::string itostr(int num, int idx = 10);
+
     // format append for std::string
     std::string strappendformat(std::string& str, const char *format, ...);
+
 }
 
 

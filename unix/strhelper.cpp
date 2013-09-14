@@ -1,7 +1,7 @@
 /*
  * strhelper implementation file
  * Author: Sun Junwen
- * Version: 1.3
+ * Version: 2.0
  * Provides converting from tstring, string and wstring to each other
  * And provides string's utf8 converting.
  * Provides triming function to string and wstring.
@@ -293,7 +293,11 @@ std::string sunjwbase::strappendformat(std::string& str, const char *format, ...
     while (1) {
         temp.resize(size);
         va_start(vl, format);
+#if defined (WIN32)
+		int n = vsnprintf_s((char *)temp.c_str(), size, size, format, vl);
+#else
         int n = vsnprintf((char *)temp.c_str(), size, format, vl);
+#endif
         va_end(vl);
         if (n > -1 && n < size) {
             temp.resize(n);
