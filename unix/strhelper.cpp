@@ -8,6 +8,7 @@
  * Provides replacing function to string and wstring.
  * Provides newline fixing to string.
  */
+#include <math.h>
 #include <string>
 
 #if defined (WIN32)
@@ -160,6 +161,44 @@ std::wstring sunjwbase::strtowstr(const std::string& str)
     
 	return wstr;
 #endif
+}
+
+std::string sunjwbase::asciiconvjson(std::string& strJsonUtf16)
+{
+	std::wstring wstrTemp;
+
+	std::string::size_type i = 0;
+	for (; i + 5 < strJsonUtf16.length(); ++i)
+	{
+		if (strJsonUtf16[i] == '\\' &&
+			strJsonUtf16[i + 1] == 'u')
+		{
+			char n[4];
+			n[0] = strJsonUtf16[i + 2];
+			n[1] = strJsonUtf16[i + 3];
+			n[2] = strJsonUtf16[i + 4];
+			n[3] = strJsonUtf16[i + 5];
+			
+			i += 5;
+
+			int utf16 = 0;
+			for (int j = 0; j < 4; ++j)
+			{
+				int num = 0;
+				if (n[j] > 'a')
+					num = n[j] - 'a' + 10;
+				else if (n[j] > '0')
+					num = n[j] - '0';
+
+				utf16 += (int)(num * pow(16.0, 3.0 - j));
+			}
+
+			wchar_t wch = utf16;
+			wstrTemp += wch;
+		}
+	}
+
+	return sunjwbase::wstrtostr(wstrTemp);
 }
 
 std::string sunjwbase::strtrim_right(const std::string& s, const std::string& spaces)

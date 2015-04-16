@@ -63,6 +63,7 @@ namespace sunjwbase
         return striconv(strAscii, "UTF-8", "GBK");
 #endif
     }
+
 	// convert utf8 encoded string to native encoded string
 	inline std::string asciiconv(std::string& strUtf8)
 	{
@@ -74,6 +75,9 @@ namespace sunjwbase
         return striconv(strUtf8, "GBK", "UTF-8");
 #endif
     }
+
+	// convert JSON utf16 encoded string to native encoded string
+	std::string asciiconvjson(std::string& strJsonUtf16);
     
 	inline std::string tstrtostr(const tstring& tstr)
 	{
