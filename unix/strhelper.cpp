@@ -137,6 +137,7 @@ std::string sunjwbase::wstrtostr(const std::wstring& wstr)
 	size_t num_chars = wcstombs(NULL, wstr.c_str(), 0);
 	char* char_buf = new char[num_chars + 1];
 	wcstombs(char_buf, wstr.c_str(), num_chars);
+	char_buf[num_chars] = '\0';
 	std::string str(char_buf);
 	delete[] char_buf;
 	setlocale(LC_ALL, "C");
@@ -156,6 +157,7 @@ std::wstring sunjwbase::strtowstr(const std::string& str)
 	size_t num_chars = mbstowcs(NULL, str.c_str(), 0);
 	wchar_t* wct_buf = new wchar_t[num_chars + 1];
 	mbstowcs(wct_buf, str.c_str(), num_chars);
+	wct_buf[num_chars] = '\0';
 	std::wstring wstr(wct_buf, num_chars);
 	delete[] wct_buf;
 	setlocale(LC_ALL, "C");
