@@ -1,23 +1,23 @@
-Libraries for daily development.
+## Libraries for daily cpp development.
 
-strhelper
+#### strhelper
  * Provides converting from tstring, string and wstring to each other
  * And provides string's utf8 converting.
  * Provides triming function to string and wstring.
  * Provides replacing function to string and wstring.
  * Provides newline fixing to string.
  
-IniProcessor
+#### IniProcessor
  * ini configuration processor.
  
-IniFileProcessor
+#### IniFileProcessor
  * ini file processor, based on IniProcessor.
  
-IniStringProcessor
+#### IniStringProcessor
  * ini format string processor, based on IniProcessor.
  
-SimpleHttp
+#### SimpleHttp
  * An oo wrapper for libcurl.
  
-urlencode
+#### urlencode
  * A helper library for url encode.
